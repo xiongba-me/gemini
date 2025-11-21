@@ -12,6 +12,24 @@ import { languages } from './language-selector.js';
  * Initializes and manages the UI, audio, video, and WebSocket interactions.
  */
 
+// Theme Toggle Logic
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    body.classList.add(savedTheme);
+}
+
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark-mode');
+    } else {
+        localStorage.removeItem('theme');
+    }
+});
+
 // DOM Elements
 const logsContainer = document.getElementById('logs-container');
 const messageInput = document.getElementById('message-input');

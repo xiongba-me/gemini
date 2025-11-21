@@ -172,3 +172,9 @@ dist
 .dev.vars
 .wrangler/
 deno.lock
+/CLAUDE.md
+/.idea/gemini.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/task.md
+/.idea/vcs.xml
