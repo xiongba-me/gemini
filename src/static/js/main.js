@@ -55,6 +55,7 @@ const configContainer = document.getElementById('config-container');
 const systemInstructionInput = document.getElementById('system-instruction');
 systemInstructionInput.value = CONFIG.SYSTEM_INSTRUCTION.TEXT;
 const applyConfigButton = document.getElementById('apply-config');
+const closeConfigButton = document.getElementById('close-config');
 const responseTypeSelect = document.getElementById('response-type-select');
 
 // Load saved values from localStorage
@@ -91,15 +92,25 @@ if (savedSystemInstruction) {
     CONFIG.SYSTEM_INSTRUCTION.TEXT = savedSystemInstruction;
 }
 
+const modalOverlay = document.getElementById('modal-overlay');
+
 // Handle configuration panel toggle
 configToggle.addEventListener('click', () => {
     configContainer.classList.toggle('active');
     configToggle.classList.toggle('active');
+    modalOverlay.classList.toggle('active');
 });
 
 applyConfigButton.addEventListener('click', () => {
     configContainer.classList.toggle('active');
     configToggle.classList.toggle('active');
+    modalOverlay.classList.toggle('active');
+});
+
+closeConfigButton.addEventListener('click', () => {
+    configContainer.classList.remove('active');
+    configToggle.classList.remove('active');
+    modalOverlay.classList.remove('active');
 });
 
 // State variables

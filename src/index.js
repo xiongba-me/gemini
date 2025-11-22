@@ -8,55 +8,28 @@ export default {
     if (request.headers.get('Upgrade') === 'websocket') {
       return handleWebSocket(request, env);
     }
-    
-    // 添加 API 请求处理
+
+    // 优先处理 API 请求
     if (url.pathname.endsWith("/chat/completions") ||
         url.pathname.endsWith("/embeddings") ||
         url.pathname.endsWith("/models")) {
       return handleAPIRequest(request, env);
     }
 
+    // 优先处理内部/开发工具请求
+    if (url.pathname.startsWith('/.well-known/')) {
+      return new Response('Not Found', { status: 404 });
+    }
+
     // 处理静态资源
-    if (url.pathname === '/' || url.pathname === '/index.html') {
-      console.log('Serving index.html',env);
-      return new Response(await env.__STATIC_CONTENT.get('index.html'), {
-        headers: {
-          'content-type': 'text/html;charset=UTF-8',
-        },
-      });
+    if (!env.ASSETS) {
+      console.error(`[ERROR] ASSETS binding is undefined for path: ${url.pathname}. Check wrangler.toml configuration.`);
+      return new Response('Internal Server Error: ASSETS binding missing', { status: 500 });
     }
-
-    // 处理其他静态资源
-    const asset = await env.__STATIC_CONTENT.get(url.pathname.slice(1));
-    if (asset) {
-      const contentType = getContentType(url.pathname);
-      return new Response(asset, {
-        headers: {
-          'content-type': contentType,
-        },
-      });
-    }
-
-
-
-    return new Response('Not found', { status: 404 });
+    return env.ASSETS.fetch(request, ctx);
   },
 };
 
-function getContentType(path) {
-  const ext = path.split('.').pop().toLowerCase();
-  const types = {
-    'js': 'application/javascript',
-    'css': 'text/css',
-    'html': 'text/html',
-    'json': 'application/json',
-    'png': 'image/png',
-    'jpg': 'image/jpeg',
-    'jpeg': 'image/jpeg',
-    'gif': 'image/gif'
-  };
-  return types[ext] || 'text/plain';
-}
 
 async function handleWebSocket(request, env) {
 

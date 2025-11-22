@@ -514,7 +514,46 @@ body.dark-mode #logs-container {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 300px;
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+#close-config {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color-dark);
+}
+
+#close-config:hover {
+    color: var(--primary-color);
+}
+
+#config-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+#config-toggle:hover {
+    background-color: rgba(0,0,0,0.1);
 }
 
 #voice-select  #response-type-select{
@@ -525,6 +564,8 @@ body.dark-mode #logs-container {
  
 /* Configuration panel */
 #config-container {
+    position: relative;
+    z-index: 1001;
     background: var(--surface-color);
     padding: var(--spacing-lg);
     border-radius: var(--border-radius);
@@ -561,6 +602,22 @@ body.dark-mode #logs-container {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-size: 14px;
+}
+
+/* Modal Overlay */
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+#modal-overlay.active {
+    display: block;
 }
 
 /* Responsive styles */
@@ -613,6 +670,15 @@ body.dark-mode #logs-container {
     .action-buttons {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .input-area {
+        flex-wrap: wrap;
+    }
+
+    #message-input {
+        width: 100%;
+        margin-bottom: 10px;
     }
 
     #video-container {
